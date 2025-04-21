@@ -6,6 +6,6 @@
     <title>Administrador de Tiendas</title>
 </head>
 <body>
-    
+    arestdyfugil´lñjhlkgjfhg
 </body>
 </html>
