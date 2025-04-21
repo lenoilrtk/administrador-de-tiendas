@@ -1,7 +1,39 @@
+<?php
+$groups = [
+    'Plataform' => [
+        [
+            'name' => 'Dashboard',
+            'icon' => 'home',
+            'url' => route('dashboard'),
+            'current' => request()->routeIs('dashboard'),
+        ],
+        [
+            'name' => 'Categorias',
+            'icon' => 'funnel',
+            'url' => route('admin.categories.index'),
+            'current' => request()->routeIs('admin.categories.*'),
+        ],
+        [
+           'name' => 'Posts',
+               'icon' => 'newspaper',
+                'url' => route('admin.posts.index'),
+                'current' => request()->routeIs('admin.posts.*'),   
+        ],
+        [
+           'name' => 'Tags',
+               'icon' => 'tag',
+                'url' => route('admin.tags.index'),
+                'current' => request()->routeIs('admin.tags.*'),   
+        ],
+    ],
+];
+?>
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         @include('partials.head')
+        
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
@@ -12,14 +44,20 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                </flux:navlist.group>
+                @foreach ($groups as $group=>$links)
+                    <flux:navlist.group :heading="$group" class="grid">
+                        @foreach ($links as $link)
+                            <flux:navlist.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
+                                {{ __($link['name']) }}
+                            </flux:navlist.item>  
+                        @endforeach
+                    </flux:navlist.group>
+                @endforeach
             </flux:navlist>
 
             <flux:spacer />
 
-            <flux:navlist variant="outline">
+            {{-- <flux:navlist variant="outline">
                 <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
                 {{ __('Repository') }}
                 </flux:navlist.item>
@@ -27,7 +65,7 @@
                 <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
                 {{ __('Documentation') }}
                 </flux:navlist.item>
-            </flux:navlist>
+            </flux:navlist> --}}
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
@@ -127,6 +165,7 @@
 
         {{ $slot }}
 
+        
         @fluxScripts
     </body>
 </html>
